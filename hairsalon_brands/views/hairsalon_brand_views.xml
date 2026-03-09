@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree View for Brand -->
+    <record id="hairsalon_brand_view_list" model="ir.ui.view">
+        <field name="name">hairsalon.brand.view.list</field>
+        <field name="model">hairsalon.brand</field>
+        <field name="arch" type="xml">
+            <list string="Brands">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View for Brand -->
+    <record id="hairsalon_brand_view_form" model="ir.ui.view">
+        <field name="name">hairsalon.brand.view.form</field>
+        <field name="model">hairsalon.brand</field>
+        <field name="arch" type="xml">
+            <form string="Brand">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Brand Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Brand -->
+    <record id="action_hairsalon_brand" model="ir.actions.act_window">
+        <field name="name">Brands</field>
+        <field name="res_model">hairsalon.brand</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Brand
+            </p>
+            <p>
+                Manage product brands and their corresponding lines.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item (Configuration > Brands) -->
+    <menuitem id="menu_hairsalon_brand_config"
+              name="Brands"
+              parent="sale.menu_sale_config"
+              action="action_hairsalon_brand"
+              sequence="50"/>
+
+</odoo>

@@ -1,0 +1,72 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hairsalon_brands
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-07 11:30+0000\n"
+"PO-Revision-Date: 2026-03-07 11:30+0000\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hairsalon_brands
+#: model:ir.model.fields,field_description:hairsalon_brands.field_product_product__brand_id
+#: model:ir.model.fields,field_description:hairsalon_brands.field_product_template__brand_id
+#: model:ir.model.fields,field_description:hairsalon_brands.field_hairsalon_brand_line__brand_id
+#: model_terms:ir.ui.view,arch_db:hairsalon_brands.hairsalon_brand_view_form
+msgid "Brand"
+msgstr "Marca"
+
+#. module: hairsalon_brands
+#: model:ir.model.fields,field_description:hairsalon_brands.field_product_product__brand_line_id
+#: model:ir.model.fields,field_description:hairsalon_brands.field_product_template__brand_line_id
+msgid "Brand Line"
+msgstr "Línea de la Marca"
+
+#. module: hairsalon_brands
+#: model:ir.model.fields,field_description:hairsalon_brands.field_hairsalon_brand__line_ids
+#: model_terms:ir.ui.view,arch_db:hairsalon_brands.hairsalon_brand_view_form
+msgid "Brand Lines"
+msgstr "Líneas de la Marca"
+
+#. module: hairsalon_brands
+#: model:ir.model.fields,field_description:hairsalon_brands.field_hairsalon_brand__name
+msgid "Brand Name"
+msgstr "Nombre de la Marca"
+
+#. module: hairsalon_brands
+#: model:ir.actions.act_window,name:hairsalon_brands.action_hairsalon_brand
+#: model:ir.ui.menu,name:hairsalon_brands.menu_hairsalon_brand_config
+#: model_terms:ir.ui.view,arch_db:hairsalon_brands.hairsalon_brand_view_tree
+msgid "Brands"
+msgstr "Marcas"
+
+#. module: hairsalon_brands
+#: model_terms:ir.actions.act_window,help:hairsalon_brands.action_hairsalon_brand
+msgid "Create a new Brand"
+msgstr "Crear una nueva Marca"
+
+#. module: hairsalon_brands
+#: model:ir.model,name:hairsalon_brands.model_hairsalon_brand
+msgid "Hairsalon Brand"
+msgstr "Marca de Peluquería"
+
+#. module: hairsalon_brands
+#: model:ir.model,name:hairsalon_brands.model_hairsalon_brand_line
+msgid "Hairsalon Brand Line"
+msgstr "Línea de Marca de Peluquería"
+
+#. module: hairsalon_brands
+#: model:ir.model.fields,field_description:hairsalon_brands.field_hairsalon_brand_line__name
+msgid "Line Name"
+msgstr "Nombre de la Línea"
+
+#. module: hairsalon_brands
+#: model_terms:ir.actions.act_window,help:hairsalon_brands.action_hairsalon_brand
+msgid "Manage product brands and their corresponding lines."
+msgstr "Gestionar marcas de productos y sus líneas correspondientes."
