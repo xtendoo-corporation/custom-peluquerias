@@ -50,10 +50,10 @@
     </record>
 
     <!-- Menu Item under POS Configuration -->
-    <menuitem id="menu_hairsalon_brand_migrate"
+    <!-- <menuitem id="menu_hairsalon_brand_migrate"
         name="Migrate Brands"
         parent="point_of_sale.menu_point_config_product"
         action="action_hairsalon_brand_migrate_wizard"
-        sequence="100" />
+        sequence="100" /> -->
 
 </odoo>
