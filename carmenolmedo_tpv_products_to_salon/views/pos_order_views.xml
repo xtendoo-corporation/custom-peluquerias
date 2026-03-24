@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_order_form_inherit_salon" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit.salon</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="pos_conventional.view_pos_order_form_inherit_payment_buttons"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_open_payment_popup']" position="before">
+                <button name="action_open_salon_wizard"
+                    string="Transferir a Salón"
+                    type="object"
+                    class="btn-primary ms-2"
+                    invisible="state != 'draft' or not has_order_lines or is_linked_to_sale" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
