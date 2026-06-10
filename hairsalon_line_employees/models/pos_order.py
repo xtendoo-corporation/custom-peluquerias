@@ -6,6 +6,12 @@ from odoo import api, fields, models
 class PosOrderEmployees(models.Model):
     _inherit = "pos.order"
 
+    attended_by_id = fields.Many2one(
+        "res.users",
+        string="Atendido por",
+        required=True,
+    )
+
     employees_summary = fields.Char(
         string="Employees Summary",
         compute="_compute_employees_summary",

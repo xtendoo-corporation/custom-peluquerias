@@ -5,6 +5,12 @@ from odoo import api, fields, models
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
+    attended_by_id = fields.Many2one(
+        "res.users",
+        string="Atendido por",
+        required=True,
+    )
+
     employees_summary = fields.Char(
         string="Resumen de Empleados",
         compute="_compute_employees_summary",
