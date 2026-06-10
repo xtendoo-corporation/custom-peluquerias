@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_form_view_hairsalon_price" model="ir.ui.view">
+        <field name="name">product.template.form.hairsalon.price</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <field name="list_price" position="attributes">
+                <attribute name="readonly">product_variant_count > 1</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
