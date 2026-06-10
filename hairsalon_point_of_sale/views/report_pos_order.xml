@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Heredamos del reporte de factura simplificada (account.move) -->
+    <template id="report_factura_simplificada_80mm_inherit" inherit_id="pos_conventional_receipt_custom.report_factura_simplificada_80mm">
+        <!-- 1. Reemplazar nombre de empresa por nombre de caja -->
+        <xpath expr="//span[@t-field='res_company.name']/.." position="replace">
+            <div class="text-left bold" style="font-size: 1.2em; text-transform: uppercase; margin-bottom: 2px;">
+                <t t-if="o.pos_order_ids">
+                    <span t-field="o.pos_order_ids[0].config_id.name"/>
+                </t>
+                <t t-else="">
+                    <span t-field="res_company.name"/>
+                </t>
+            </div>
+        </xpath>
+
+        <!-- 2. Mover la fecha debajo de FACTURA SIMPLIFICADA -->
+        <!-- Primero quitamos la fecha (y el bloque) del final -->
+        <xpath expr="//div[span[@t-field='o.invoice_date']]" position="replace"/>
+
+        <!-- La insertamos justo después del bloque del número de factura -->
+        <xpath expr="//div[span[@t-field='o.name']]" position="after">
+            <div class="text-left" style="font-size: 1em; margin-bottom: 5px;">
+                <span t-field="o.invoice_date"/>
+                <span t-field="o.create_date" t-options='{"format": "HH:mm"}'/>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Heredamos del reporte de pedido POS (pos.order) -->
+    <template id="report_pos_order_80mm_inherit" inherit_id="pos_conventional_receipt_custom.report_pos_order_80mm">
+        <!-- 1. Reemplazar nombre de empresa por nombre de caja -->
+        <xpath expr="//span[@t-field='res_company.name']/.." position="replace">
+            <div class="text-left bold" style="font-size: 1.2em; text-transform: uppercase; margin-bottom: 2px;">
+                <span t-field="o.config_id.name"/>
+            </div>
+        </xpath>
+
+        <!-- 2. Mover la fecha debajo del número de TICKET -->
+        <!-- Quitamos la fecha del final -->
+        <xpath expr="//div[span[@t-field='o.date_order']]" position="replace"/>
+
+        <!-- La insertamos después de TICKET: XXX -->
+        <xpath expr="//div[span[@t-field='o.name']]" position="after">
+            <div class="text-left" style="font-size: 1em; margin-bottom: 5px;">
+                <span t-field="o.date_order" />
+            </div>
+        </xpath>
+    </template>
+</odoo>

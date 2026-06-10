@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="hairsalon_point_of_sale.ReceiptHeader_inherit" t-inherit="point_of_sale.ReceiptHeader" t-inherit-mode="extension">
+        <!-- Buscamos el bloque de la empresa por su contenido o estructura común -->
+        <xpath expr="//*[contains(text(), 'company.name') or contains(@t-esc, 'company.name')]/.." position="replace">
+            <div style="font-weight: bold; font-size: 16px; text-transform: uppercase; margin-bottom: 4px; color: black; display: block !important;">
+                <t t-esc="props.order.config.name" />
+            </div>
+            <div style="color: red; font-weight: bold; font-size: 10px;">*** TICKET PERSONALIZADO PELUQUERÍA ***</div>
+        </xpath>
+    </t>
+
+    <t t-name="hairsalon_point_of_sale.OrderReceipt_inherit" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('pos-receipt')]" position="inside">
+            <div style="text-align: center; font-size: 14px; font-weight: bold; margin-top: 20px; color: red; border: 2px dashed red; padding: 10px; display: block !important;">
+                TEST: HERENCIA ACTIVA
+            </div>
+        </xpath>
+    </t>
+</templates>
