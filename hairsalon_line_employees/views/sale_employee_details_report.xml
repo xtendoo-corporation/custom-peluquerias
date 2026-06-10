@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_employee_details_report" model="ir.actions.report">
+        <field name="name">Detalle de Ventas por Empleado</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hairsalon_line_employees.sale_employee_details</field>
+    </record>
+
+    <template id="sale_employee_details">
+        <t t-call="web.html_container">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <div class="text-center mb-3">
+                        <h3>Detalle de Ventas por Empleado</h3>
+                        <t t-if="sale_order_names">
+                            <h5 class="text-muted">Pedidos: <t t-out="', '.join(sale_order_names)"/></h5>
+                        </t>
+                        <div class="col-12 text-end mt-2">
+                            <span class="badge bg-light text-dark border border-dark p-2">
+                                <t t-if="data.get('date_start') and data.get('date_stop')">
+                                    <strong>
+                                        Desde: <span t-out="data['date_start']"/>
+                                        &#160;&#160;|&#160;&#160;
+                                        Hasta: <span t-out="data['date_stop']"/>
+                                    </strong>
+                                </t>
+                            </span>
+                        </div>
+                    </div>
+
+                    <t t-if="employee_sales_grouped">
+                        <t t-foreach="employee_sales_grouped" t-as="emp_data">
+                            <h6 class="bg-secondary p-1 fw-bold mt-3">
+                                Detalle de Ventas - <span t-out="emp_data['employee_name']"/>
+                            </h6>
+                            <table class="table table-sm table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start">Pedido</th>
+                                        <th class="text-start">Cliente</th>
+                                        <th class="text-start">Producto</th>
+                                        <th class="text-start">Fecha</th>
+                                        <th class="text-end">Precio Línea</th>
+                                        <th class="text-end">Importe Empleado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="emp_data['lines']" t-as="row" class="border-bottom border-secondary">
+                                        <td class="ps-2"><span t-out="row['order_name']"/></td>
+                                        <td><span t-out="row['partner_name']"/></td>
+                                        <td><span t-out="row['product_name']"/></td>
+                                        <td><span t-out="row['date']"/></td>
+                                        <td class="text-end">
+                                            <t t-if="currency['position'] == 'after'">
+                                                <span t-out="row['line_total']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                                                <span t-out="currency['symbol']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-out="currency['symbol']"/>
+                                                <span t-out="row['line_total']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                                            </t>
+                                        </td>
+                                        <td class="text-end fw-bold">
+                                            <t t-if="currency['position'] == 'after'">
+                                                <span t-out="row['employee_amount']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                                                <span t-out="currency['symbol']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-out="currency['symbol']"/>
+                                                <span t-out="row['employee_amount']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                    <tr class="border-top border-dark border-2">
+                                        <td colspan="5" class="text-end fw-bold">
+                                            Total <span t-out="emp_data['employee_name']"/>:
+                                        </td>
+                                        <td class="text-end fw-bold">
+                                            <t t-if="currency['position'] == 'after'">
+                                                <span t-out="emp_data['total_amount']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                                                <span t-out="currency['symbol']"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-out="currency['symbol']"/>
+                                                <span t-out="emp_data['total_amount']" t-options="{'widget': 'float', 'precision': currency['precision']}"/>
+                                            </t>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <p class="text-muted text-center mt-5">No se encontraron líneas de pedido con empleados asignados para el rango seleccionado.</p>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="view_sale_details_wizard_form" model="ir.ui.view">
+        <field name="name">sale.details.wizard.form</field>
+        <field name="model">sale.details.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Detalle de Ventas por Empleado">
+                <group>
+                    <field name="date_start"/>
+                    <field name="date_stop"/>
+                    <field name="sale_order_ids" widget="many2many_tags" placeholder="Filtrar por pedidos concretos..."/>
+                </group>
+                <footer>
+                    <button name="generate_report" string="Imprimir" type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_sale_employee_details" model="ir.actions.act_window">
+        <field name="name">Ventas por Empleado</field>
+        <field name="res_model">sale.details.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem
+        id="menu_sale_employee_details"
+        name="Ventas por Empleado"
+        parent="sale.menu_sale_report"
+        action="action_sale_employee_details"
+        sequence="50"/>
+</odoo>
