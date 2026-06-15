@@ -17,6 +17,21 @@ class PosOrderEmployees(models.Model):
         compute="_compute_employees_summary",
         store=True,
     )
+    employee_names_summary = fields.Char(
+        string="Empleado/s",
+        compute="_compute_employee_names_summary",
+        store=True,
+    )
+
+    @api.depends("lines.employee_ids")
+    def _compute_employee_names_summary(self):
+        for order in self:
+            employees = order.lines.employee_ids
+            if not employees:
+                order.employee_names_summary = ""
+                continue
+            employee_names = sorted(list(set(employees.mapped("name"))))
+            order.employee_names_summary = ", ".join(employee_names)
 
     @api.depends("lines.employee_ids", "lines.price_subtotal")
     def _compute_employees_summary(self):

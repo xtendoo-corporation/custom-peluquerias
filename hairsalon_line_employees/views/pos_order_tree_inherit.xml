@@ -6,9 +6,9 @@
         <field name="priority">100</field>
         <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
         <field name="arch" type="xml">
-            <!-- Insert employees_summary column (visible by default) -->
+            <!-- Insert employees summary column (visible by default) -->
             <xpath expr="//list/field[@name='partner_id']" position="after">
-                <field name="employees_summary" string="Empleado/s"/>
+                <field name="employee_names_summary"/>
             </xpath>
         </field>
     </record>
