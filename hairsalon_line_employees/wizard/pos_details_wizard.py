@@ -18,5 +18,5 @@ class PosDetails(models.TransientModel):
             'pos_order_ids': self.pos_order_ids.ids,
         }
         return self.env.ref(
-            'pos_conventional_line_employees.sale_details_custom_report'
+            'hairsalon_line_employees.sale_details_custom_report'
         ).report_action([], data=data)

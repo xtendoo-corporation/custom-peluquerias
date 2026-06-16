@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- New report action pointing to our custom template -->
-    <record id="sale_details_custom_report" model="ir.actions.report">
-        <field name="name">Detalles de ventas</field>
-        <field name="model">pos.order</field>
-        <field name="report_type">qweb-pdf</field>
-        <field name="report_name">hairsalon_line_employees.sale_custom</field>
-    </record>
 
     <!-- Our custom template, completely independent from the base -->
     <template id="sale_custom">
@@ -99,4 +92,12 @@
             </t>
         </t>
     </template>
+
+    <!-- New report action pointing to our custom template -->
+    <record id="sale_details_custom_report" model="ir.actions.report">
+        <field name="name">Detalles de ventas</field>
+        <field name="model">pos.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">hairsalon_line_employees.sale_custom</field>
+    </record>
 </odoo>
