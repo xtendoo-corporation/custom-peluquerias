@@ -11,8 +11,10 @@
                 <field name="employee_names_summary"/>
                 <field name="attended_by_id"/>
             </xpath>
-            <xpath expr="//list/field[@name='employee_id']" position="replace">
-            </xpath>
+            <!-- Eliminado xpath problemático que apuntaba a field[@name='employee_id'] en la vista padre.
+                 La vista padre (point_of_sale.view_pos_order_tree) no contiene ese campo, lo que
+                 provocaba un ParseError al cargar el módulo. Si en el futuro existe ese campo,
+                 reintroducir un xpath correcto o crear la columna en la vista padre. -->
         </field>
     </record>
 </odoo>
