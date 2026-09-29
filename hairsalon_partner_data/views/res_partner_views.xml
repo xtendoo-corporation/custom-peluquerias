@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_partner_form_inherit_hairsalon_partner_data" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.hairsalon.partner.data</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="phone" position="after">
+                <field name="phone_2" />
+                <field name="phone_3" />
+            </field>
+        </field>
+    </record>
+</odoo>
