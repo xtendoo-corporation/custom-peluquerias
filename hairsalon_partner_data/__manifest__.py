@@ -1,7 +1,7 @@
 {
     "name": "Hairsalon - Datos de contactos",
     "summary": "Añade teléfonos alternativos y fecha de nacimiento a los contactos.",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "author": "Xtendoo",
     "website": "https://xtendoo.es",
     "category": "Contacts",
