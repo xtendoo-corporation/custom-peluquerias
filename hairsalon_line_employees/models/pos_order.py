@@ -7,8 +7,9 @@ class PosOrderEmployees(models.Model):
     _inherit = "pos.order"
 
     attended_by_id = fields.Many2one(
-        "res.users",
+        "hr.employee",
         string="Atendido por",
+        domain="[('company_id', 'in', [False, company_id])]",
         required=True,
     )
 
@@ -22,6 +23,15 @@ class PosOrderEmployees(models.Model):
         compute="_compute_employee_names_summary",
         store=True,
     )
+
+    @api.model
+    def get_order_receipt_data(self, order_id):
+        """El ticket muestra el empleado de "Atendido por" en lugar del usuario."""
+        data = super().get_order_receipt_data(order_id)
+        order = self.browse(order_id)
+        if data and order.attended_by_id:
+            data["user_id"] = [order.attended_by_id.id, order.attended_by_id.name]
+        return data
 
     @api.depends("lines.employee_ids")
     def _compute_employee_names_summary(self):

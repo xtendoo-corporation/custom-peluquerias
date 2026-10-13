@@ -1,10 +1,16 @@
 {
     "name": "pos_conventional_line_employees",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "summary": "Asignación de empleados a líneas POS y ventas",
     "category": "Sales/Point of Sale",
     "author": "XTendoo",
-    "depends": ["pos_conventional_core", "point_of_sale", "hr", "sale"],
+    "depends": [
+        "pos_conventional_core",
+        "pos_conventional_receipt_custom",
+        "point_of_sale",
+        "hr",
+        "sale",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "views/pos_order_line_views.xml",
@@ -14,6 +20,7 @@
         "views/pos_details_wizard_inherit.xml",
         "views/sale_order_views.xml",
         "views/sale_employee_details_report.xml",
+        "views/report_pos_order_attended_by.xml",
     ],
     "installable": True,
     "application": False,
