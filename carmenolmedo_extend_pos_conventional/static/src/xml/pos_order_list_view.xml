@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="carmenolmedo_extend_pos_conventional.ListView" t-inherit="web.ListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-set-slot='control-panel-create-button']/button[@class='btn btn-primary o_list_button_add']" position="after">
+            <button t-if="props.resModel === 'pos.order' and state and state.showCloseButton"
+                    type="button"
+                    class="btn btn-danger ms-1 o_list_button_close_session"
+                    t-on-click="onCloseCashRegister">
+                <i class="fa fa-times-circle me-1"/>Cerrar caja
+            </button>
+        </xpath>
+    </t>
+</templates>

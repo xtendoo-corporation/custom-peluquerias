@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_order_line_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group/field[@name='product_id']" position="after">
-                <field name="employee_ids"/>
+                <field name="employee_ids" required="1"/>
             </xpath>
         </field>
     </record>
@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_order_line"/>
         <field name="arch" type="xml">
             <xpath expr="//list" position="inside">
-                <field name="employee_ids" optional="show" widget="many2many_tags" string="Empleado/s"/>
+                <field name="employee_ids" optional="show" widget="many2many_tags" string="Empleado/s" required="1"/>
             </xpath>
         </field>
     </record>
@@ -31,12 +31,12 @@
         <field name="arch" type="xml">
             <!-- Insert employee_ids in the list of lines -->
             <xpath expr="//list[ancestor::field[@name='lines']]" position="inside">
-                <field name="employee_ids" optional="show" widget="many2many_tags" string="Empleado/s"/>
+                <field name="employee_ids" optional="show" widget="many2many_tags" string="Empleado/s" required="1"/>
             </xpath>
 
             <!-- Insert employee_ids in the line form -->
             <xpath expr="//form[ancestor::field[@name='lines']]//group[@col='4']" position="inside">
-                <field name="employee_ids" widget="many2many_tags" string="Empleado/s"/>
+                <field name="employee_ids" widget="many2many_tags" string="Empleado/s" required="1"/>
             </xpath>
         </field>
     </record>

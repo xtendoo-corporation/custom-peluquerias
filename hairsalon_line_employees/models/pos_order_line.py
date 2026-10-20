@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class PosOrderLineEmployee(models.Model):
@@ -11,6 +12,17 @@ class PosOrderLineEmployee(models.Model):
         column1="pos_order_line_id",
         column2="hr_employee_id",
     )
+
+    @api.constrains("employee_ids")
+    def _check_employee_ids_required(self):
+        for line in self:
+            if not line.employee_ids:
+                raise ValidationError(
+                    _(
+                        "Debe indicar al menos un empleado en la línea del producto %s.",
+                        line.product_id.display_name or line.name or "",
+                    )
+                )
 
     @api.model
     def _load_pos_data_fields(self, config):
