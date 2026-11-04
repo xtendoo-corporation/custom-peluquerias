@@ -1,0 +1,39 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* carmenolmedo_stock_transfer_employee
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-04 18:25+0000\n"
+"PO-Revision-Date: 2026-11-04 18:25+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: carmenolmedo_stock_transfer_employee
+#. odoo-python
+#: code:addons/carmenolmedo_stock_transfer_employee/models/stock_picking.py:0
+msgid ""
+"Internal transfers must have an employee of the company as contact. Review: "
+"%(pickings)s"
+msgstr ""
+"Los traspasos internos deben tener como contacto a un empleado de la "
+"empresa. Revise: %(pickings)s"
+
+#. module: carmenolmedo_stock_transfer_employee
+#: model:ir.model.fields,field_description:carmenolmedo_stock_transfer_employee.field_res_partner__is_employee_contact
+#: model:ir.model.fields,field_description:carmenolmedo_stock_transfer_employee.field_res_users__is_employee_contact
+msgid "Is Employee Contact"
+msgstr "Es contacto de empleado"
+
+#. module: carmenolmedo_stock_transfer_employee
+#: model:ir.model.fields,help:carmenolmedo_stock_transfer_employee.field_res_partner__is_employee_contact
+#: model:ir.model.fields,help:carmenolmedo_stock_transfer_employee.field_res_users__is_employee_contact
+msgid "The contact is the work contact of an active employee of the company."
+msgstr ""
+"El contacto es el contacto de trabajo de un empleado activo de la empresa."
