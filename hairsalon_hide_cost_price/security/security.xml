@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_groups_privilege_cost_price" model="res.groups.privilege">
+        <field name="name">Cost Price</field>
+        <field name="sequence">90</field>
+        <field name="category_id" ref="base.module_category_sales"/>
+    </record>
+
+    <record id="group_show_cost_price" model="res.groups">
+        <field name="name">Show Cost Price</field>
+        <field name="privilege_id" ref="res_groups_privilege_cost_price"/>
+        <field name="comment">The user can see product costs, margins and stock valuation.</field>
+    </record>
+
+    <record id="base.group_system" model="res.groups">
+        <field name="implied_ids" eval="[Command.link(ref('group_show_cost_price'))]"/>
+    </record>
+</odoo>

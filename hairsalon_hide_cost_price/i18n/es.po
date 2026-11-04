@@ -1,0 +1,38 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* hairsalon_hide_cost_price
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-11-04 18:02+0000\n"
+"PO-Revision-Date: 2026-11-04 18:02+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: hairsalon_hide_cost_price
+#: model:res.groups.privilege,name:hairsalon_hide_cost_price.res_groups_privilege_cost_price
+msgid "Cost Price"
+msgstr "Precio de coste"
+
+#. module: hairsalon_hide_cost_price
+#: model_terms:ir.ui.view,arch_db:hairsalon_hide_cost_price.view_pos_order_graph
+msgid "Point of Sale Orders"
+msgstr "Pedidos del punto de venta"
+
+#. module: hairsalon_hide_cost_price
+#: model:res.groups,name:hairsalon_hide_cost_price.group_show_cost_price
+msgid "Show Cost Price"
+msgstr "Ver precio de coste"
+
+#. module: hairsalon_hide_cost_price
+#: model:res.groups,comment:hairsalon_hide_cost_price.group_show_cost_price
+msgid "The user can see product costs, margins and stock valuation."
+msgstr ""
+"El usuario puede ver costes de productos, márgenes y valoración de "
+"inventario."

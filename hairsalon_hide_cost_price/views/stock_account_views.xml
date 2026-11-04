@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Variants list: unit cost and total value added by stock_account -->
+    <record id="product_product_view_list_at_date" model="ir.ui.view">
+        <field name="name">product.product.list.at.date.hide.cost.price</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock_account.product_product_view_list_at_date"/>
+        <field name="arch" type="xml">
+            <field name="avg_cost" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+            <field name="total_value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Inventory > Reporting > Stock -->
+    <record id="product_product_stock_tree" model="ir.ui.view">
+        <field name="name">product.product.stock.list.hide.cost.price</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock_account.product_product_stock_tree_inherit_stock_account"/>
+        <field name="arch" type="xml">
+            <field name="avg_cost" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+            <field name="total_value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_stock_quant_tree" model="ir.ui.view">
+        <field name="name">stock.quant.list.hide.cost.price</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock_account.view_stock_quant_tree_inherit"/>
+        <field name="arch" type="xml">
+            <field name="value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_stock_quant_tree_editable" model="ir.ui.view">
+        <field name="name">stock.quant.list.editable.hide.cost.price</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock_account.view_stock_quant_tree_editable_inherit"/>
+        <field name="arch" type="xml">
+            <field name="value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_move_view_list" model="ir.ui.view">
+        <field name="name">stock.move.list.hide.cost.price</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock_account.stock_move_view_list"/>
+        <field name="arch" type="xml">
+            <field name="value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+            <field name="remaining_value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="stock_move_view_list_valuation" model="ir.ui.view">
+        <field name="name">stock.move.list.valuation.hide.cost.price</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock_account.stock_move_view_list_valuation"/>
+        <field name="arch" type="xml">
+            <field name="value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+            <field name="standard_price" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Valuation measures must not be offered in stock moves analysis -->
+    <record id="view_move_pivot" model="ir.ui.view">
+        <field name="name">stock.move.pivot.hide.cost.price</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_pivot"/>
+        <field name="arch" type="xml">
+            <pivot position="inside">
+                <field name="value" invisible="1" groups="!hairsalon_hide_cost_price.group_show_cost_price"/>
+                <field name="value_manual" invisible="1" groups="!hairsalon_hide_cost_price.group_show_cost_price"/>
+                <field name="remaining_value" invisible="1" groups="!hairsalon_hide_cost_price.group_show_cost_price"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_move_graph" model="ir.ui.view">
+        <field name="name">stock.move.graph.hide.cost.price</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_graph"/>
+        <field name="arch" type="xml">
+            <graph position="inside">
+                <field name="value" invisible="1" groups="!hairsalon_hide_cost_price.group_show_cost_price"/>
+                <field name="value_manual" invisible="1" groups="!hairsalon_hide_cost_price.group_show_cost_price"/>
+                <field name="remaining_value" invisible="1" groups="!hairsalon_hide_cost_price.group_show_cost_price"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_production_lot_form" model="ir.ui.view">
+        <field name="name">stock.lot.form.hide.cost.price</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock_account.view_production_lot_form_stock_account"/>
+        <field name="arch" type="xml">
+            <field name="total_value" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+            <field name="avg_cost" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+            <field name="standard_price" position="attributes">
+                <attribute name="groups">hairsalon_hide_cost_price.group_show_cost_price</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
