@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="pos_session_sales_details_daily_close" inherit_id="point_of_sale.pos_session_sales_details">
+        <xpath expr="//div[@id='end_report']" position="before">
+            <t t-set="close" t-value="daily_close"/>
+            <div class="page" id="daily_close">
+                <h3>Daily close</h3>
+                <div class="row">
+                    <div class="col-12">
+                        Date: <span t-out="close['date']" t-options="{'widget': 'date'}"/>
+                    </div>
+                </div>
+                <table class="table table-sm">
+                    <thead>
+                        <tr><th>Summary</th><th class="text-end">Amount</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total sold</td>
+                            <td class="text-end"><span t-out="close['total_sold']" t-options="{'widget': 'monetary', 'display_currency': close['currency']}"/></td>
+                        </tr>
+                        <tr>
+                            <td>Total collected</td>
+                            <td class="text-end"><span t-out="close['total_collected']" t-options="{'widget': 'monetary', 'display_currency': close['currency']}"/></td>
+                        </tr>
+                        <tr>
+                            <td>Pending collection</td>
+                            <td class="text-end"><span t-out="close['pending_collection']" t-options="{'widget': 'monetary', 'display_currency': close['currency']}"/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Expected cash in drawer</strong></td>
+                            <td class="text-end"><strong><span t-out="close['expected_cash']" t-options="{'widget': 'monetary', 'display_currency': close['currency']}"/></strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-6">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr><th>Sales by origin</th><th class="text-end">Amount</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="close['sales']" t-as="line">
+                                    <td><span t-out="line['origin']"/></td>
+                                    <td class="text-end"><span t-out="line['amount']" t-options="{'widget': 'monetary', 'display_currency': close['currency']}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr><th>Payments</th><th>Method</th><th class="text-end">Amount</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="close['payments']" t-as="line">
+                                    <td><span t-out="line['origin']"/></td>
+                                    <td><span t-out="line['method']"/></td>
+                                    <td class="text-end"><span t-out="line['amount']" t-options="{'widget': 'monetary', 'display_currency': close['currency']}"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
