@@ -9,7 +9,8 @@ class HairsalonDailyClosePayment(models.Model):
 
     POS collections come from pos.payment. Sales collections come from the
     partial reconciliations between customer payments and invoices linked to
-    a sale order, so each payment is counted only once.
+    a sale order, so each payment is counted only once. Customer account
+    payments (no journal) are not collections and are left out.
     """
 
     _name = "hairsalon.daily.close.payment"
@@ -22,6 +23,7 @@ class HairsalonDailyClosePayment(models.Model):
         selection=[("pos", "Point of sale"), ("sale", "Sales")],
         readonly=True,
     )
+    pos_session_id = fields.Many2one("pos.session", readonly=True)
     company_id = fields.Many2one("res.company", readonly=True)
     currency_id = fields.Many2one("res.currency", readonly=True)
     payment_method = fields.Char(string="Payment method", readonly=True)
@@ -40,6 +42,7 @@ class HairsalonDailyClosePayment(models.Model):
                     (pp.payment_date AT TIME ZONE 'UTC'
                         AT TIME ZONE COALESCE(rp.tz, 'UTC'))::date AS date,
                     'pos'::varchar AS origin,
+                    po.session_id AS pos_session_id,
                     po.company_id AS company_id,
                     co.currency_id AS currency_id,
                     COALESCE(pm.name->>'es_ES', pm.name->>'en_US')
@@ -54,9 +57,11 @@ class HairsalonDailyClosePayment(models.Model):
                 FROM pos_payment pp
                 JOIN pos_order po ON po.id = pp.pos_order_id
                 JOIN pos_payment_method pm ON pm.id = pp.payment_method_id
+                JOIN account_journal pj ON pj.id = pm.journal_id
                 JOIN res_company co ON co.id = po.company_id
                 JOIN res_partner rp ON rp.id = co.partner_id
                 WHERE po.state IN ('paid', 'done')
+                    AND pj.type IN ('cash', 'bank')
 
                 UNION ALL
 
@@ -64,6 +69,7 @@ class HairsalonDailyClosePayment(models.Model):
                     apr.id * 2 + 1 AS id,
                     ap.date AS date,
                     'sale'::varchar AS origin,
+                    ap.pos_session_id AS pos_session_id,
                     ap.company_id AS company_id,
                     co.currency_id AS currency_id,
                     COALESCE(aj.name->>'es_ES', aj.name->>'en_US')

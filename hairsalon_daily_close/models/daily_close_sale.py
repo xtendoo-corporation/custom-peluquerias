@@ -17,6 +17,7 @@ class HairsalonDailyCloseSale(models.Model):
         selection=[("pos", "Point of sale"), ("sale", "Sales")],
         readonly=True,
     )
+    pos_session_id = fields.Many2one("pos.session", readonly=True)
     company_id = fields.Many2one("res.company", readonly=True)
     currency_id = fields.Many2one("res.currency", readonly=True)
     reference = fields.Char(readonly=True)
@@ -34,6 +35,7 @@ class HairsalonDailyCloseSale(models.Model):
                     (po.date_order AT TIME ZONE 'UTC'
                         AT TIME ZONE COALESCE(rp.tz, 'UTC'))::date AS date,
                     'pos'::varchar AS origin,
+                    po.session_id AS pos_session_id,
                     po.company_id AS company_id,
                     co.currency_id AS currency_id,
                     po.name AS reference,
@@ -52,6 +54,7 @@ class HairsalonDailyCloseSale(models.Model):
                     (so.date_order AT TIME ZONE 'UTC'
                         AT TIME ZONE COALESCE(rp.tz, 'UTC'))::date AS date,
                     'sale'::varchar AS origin,
+                    so.pos_session_id AS pos_session_id,
                     so.company_id AS company_id,
                     co.currency_id AS currency_id,
                     so.name AS reference,

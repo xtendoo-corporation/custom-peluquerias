@@ -11,8 +11,9 @@ class ReportPointOfSaleSaledetails(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         values = super()._get_report_values(docids, data=data)
         date_from, date_to = self._get_daily_close_period(values)
+        sessions = self.env["pos.session"].browse(values.get("session_ids") or [])
         values["daily_close"] = self.env["hairsalon.daily.close"].get_summary(
-            date_from, date_to, self.env.company
+            date_from, date_to, self.env.company, sessions=sessions
         )
         return values
 

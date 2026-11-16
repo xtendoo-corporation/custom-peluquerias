@@ -107,6 +107,16 @@ msgstr "Pendiente de cobro"
 
 #. module: hairsalon_daily_close
 #: model_terms:ir.ui.view,arch_db:hairsalon_daily_close.pos_session_sales_details_daily_close
+msgid "of which cash from point of sale"
+msgstr "del cual efectivo del punto de venta"
+
+#. module: hairsalon_daily_close
+#: model_terms:ir.ui.view,arch_db:hairsalon_daily_close.pos_session_sales_details_daily_close
+msgid "of which cash from sales orders"
+msgstr "del cual efectivo de pedidos de venta"
+
+#. module: hairsalon_daily_close
+#: model_terms:ir.ui.view,arch_db:hairsalon_daily_close.pos_session_sales_details_daily_close
 msgid "Expected cash in drawer"
 msgstr "Efectivo esperado en caja"
 

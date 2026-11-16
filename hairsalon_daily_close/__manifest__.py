@@ -3,7 +3,7 @@
 
 {
     "name": "Hairsalon Daily Close",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.0.1",
     "category": "Point of Sale",
     "summary": "Daily close reconciling POS and Sales sales and collections",
     "author": "Xtendoo",
@@ -18,6 +18,7 @@
         "security/ir.model.access.csv",
         "security/ir_rule.xml",
         "views/pos_session_sales_details_views.xml",
+        "views/sale_order_views.xml",
     ],
     "installable": True,
     "application": False,

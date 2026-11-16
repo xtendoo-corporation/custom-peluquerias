@@ -287,6 +287,104 @@ class TestDailyClose(AccountTestInvoicingCommon):
         self.assertEqual(summary["expected_cash"], 0.0)
         self.assertEqual(summary["sales"][0]["amount"], 0.0)
 
+    def _open_other_session(self):
+        """Cierra la sesión de los tests y abre otra en un TPV distinto."""
+        self.session.sudo().state = "closed"
+        config = (
+            self.env["pos.config"]
+            .sudo()
+            .create({"name": "TPV Test 2", "company_id": self.company.id})
+        )
+        return (
+            self.env["pos.session"]
+            .sudo()
+            .create(
+                {
+                    "config_id": config.id,
+                    "user_id": self.env.user.id,
+                    "state": "opened",
+                }
+            )
+        )
+
+    def _session_summary(self, session):
+        return self.env["hairsalon.daily.close"].get_summary(
+            self.today, self.today, self.company, sessions=session
+        )
+
+    def test_sale_confirmed_is_linked_to_open_session(self):
+        sale = self._create_sale()
+        self.assertEqual(sale.pos_session_id, self.session)
+
+    def test_sale_without_open_session_is_not_linked(self):
+        self.session.sudo().state = "closed"
+        sale = self._create_sale()
+        self.assertFalse(sale.pos_session_id)
+
+    def test_payment_is_linked_to_open_session(self):
+        sale = self._create_sale()
+        invoice = self._advance_and_collect(sale, 50.0, self.journal_cash)
+        payment = self.env["account.payment"].search(
+            [("move_id", "in", invoice.line_ids.matched_credit_ids.credit_move_id.move_id.ids)]
+        )
+        self.assertTrue(payment)
+        self.assertEqual(payment.pos_session_id, self.session)
+
+    def test_session_summary_counts_only_its_own_movements(self):
+        sale_1 = self._create_sale()
+        self._advance_and_collect(sale_1, 50.0, self.journal_cash)
+        self._create_pos_order([(self.pm_cash, 20.0, False)])
+        session_2 = self._open_other_session()
+        sale_2 = self._create_sale()
+        self._advance_and_collect(sale_2, 10.0, self.journal_bank)
+        self.assertEqual(sale_2.pos_session_id, session_2)
+
+        first = self._session_summary(self.session)
+        self.assertEqual(first["total_sold"], 1020.0)
+        self.assertEqual(first["total_collected"], 520.0)
+        self.assertEqual(first["expected_cash"], 520.0)
+
+        self.assertEqual(first["expected_cash_pos"], 20.0)
+        self.assertEqual(first["expected_cash_sale"], 500.0)
+
+        second = self._session_summary(session_2)
+        self.assertEqual(second["total_sold"], 1000.0)
+        self.assertEqual(second["total_collected"], 100.0)
+        self.assertEqual(second["expected_cash"], 0.0)
+
+    def test_session_summary_ignores_unlinked_sales_same_day(self):
+        self.session.sudo().state = "closed"
+        self._create_sale()  # sin sesión abierta: no pertenece a ninguna
+        session_2 = self._open_other_session()
+        summary = self._session_summary(session_2)
+        self.assertEqual(summary["total_sold"], 0.0)
+
+    def test_customer_account_payment_is_not_a_collection(self):
+        pm_account = (
+            self.env["pos.payment.method"]
+            .sudo()
+            .create(
+                {
+                    "name": "Cuenta de cliente",
+                    "split_transactions": True,
+                    "config_ids": [(4, self.session.config_id.id)],
+                    "company_id": self.company.id,
+                }
+            )
+        )
+        self._create_pos_order([(pm_account, 30.0, False)])
+        summary = self._session_summary(self.session)
+        self.assertEqual(summary["total_sold"], 30.0)
+        self.assertEqual(summary["total_collected"], 0.0)
+        self.assertEqual(summary["pending_collection"], 30.0)
+
+    def test_origin_labels_distinguish_pos_from_sale_orders(self):
+        summary = self._summary()
+        self.assertEqual(
+            [line["origin"] for line in summary["sales"]],
+            ["Ventas TPV", "Pedidos de venta"],
+        )
+
     def test_sale_details_report_renders_daily_close(self):
         """El informe de detalle de ventas del TPV incluye el cierre diario."""
         report = self.env["ir.actions.report"]._get_report(
@@ -303,3 +401,13 @@ class TestDailyClose(AccountTestInvoicingCommon):
         }
         html, _report_type = report._render_qweb_html(report.report_name, [], data=data)
         self.assertIn(b'id="daily_close"', html)
+
+    def test_sale_details_report_by_session_uses_session_scope(self):
+        self._create_sale()
+        report = self.env["ir.actions.report"]._get_report(
+            "point_of_sale.sale_details_report"
+        )
+        html, _report_type = report._render_qweb_html(
+            report.report_name, [], data={"session_ids": self.session.ids}
+        )
+        self.assertIn(b"1,000.00", html)

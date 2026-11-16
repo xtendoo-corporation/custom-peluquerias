@@ -3,7 +3,7 @@
 
 from odoo import api, models
 
-ORIGIN_LABELS = {"pos": "Punto de venta", "sale": "Ventas"}
+ORIGIN_LABELS = {"pos": "Ventas TPV", "sale": "Pedidos de venta"}
 
 
 class HairsalonDailyClose(models.AbstractModel):
@@ -13,17 +13,18 @@ class HairsalonDailyClose(models.AbstractModel):
     _description = "Daily close"
 
     @api.model
-    def get_summary(self, date_from, date_to, company):
+    def get_summary(self, date_from, date_to, company, sessions=None):
         """Devuelve totales y desgloses del cierre de un intervalo y compañía.
 
-        Los cobros se filtran por su fecha de pago, incluidos los de facturas
-        sin pedido de venta.
+        Con ``sessions`` se cuenta solo lo imputado a esas sesiones de TPV; sin
+        ellas, lo ocurrido entre las dos fechas. Los cobros se filtran por su
+        fecha de pago, incluidos los de facturas sin pedido de venta.
         """
-        domain = [
-            ("date", ">=", date_from),
-            ("date", "<=", date_to),
-            ("company_id", "=", company.id),
-        ]
+        domain = [("company_id", "=", company.id)]
+        if sessions:
+            domain.append(("pos_session_id", "in", sessions.ids))
+        else:
+            domain += [("date", ">=", date_from), ("date", "<=", date_to)]
         self.env.flush_all()
         sales = self.env["hairsalon.daily.close.sale"].sudo().search(domain)
         payments = self.env["hairsalon.daily.close.payment"].sudo().search(domain)
@@ -41,6 +42,7 @@ class HairsalonDailyClose(models.AbstractModel):
             )
         )
         total_sold = sum(sales.mapped("amount_sold"))
+        cash = payments.filtered("is_cash")
         return {
             "date_from": date_from,
             "date_to": date_to,
@@ -48,7 +50,13 @@ class HairsalonDailyClose(models.AbstractModel):
             "total_sold": total_sold,
             "total_collected": sum(payments.mapped("amount")),
             "pending_collection": total_sold - sum(sale_payments.mapped("amount")),
-            "expected_cash": sum(payments.filtered("is_cash").mapped("amount")),
+            "expected_cash": sum(cash.mapped("amount")),
+            "expected_cash_pos": sum(
+                cash.filtered(lambda pay: pay.origin == "pos").mapped("amount")
+            ),
+            "expected_cash_sale": sum(
+                cash.filtered(lambda pay: pay.origin == "sale").mapped("amount")
+            ),
             "sales": self._group_sales(sales),
             "payments": self._group_payments(payments),
         }
