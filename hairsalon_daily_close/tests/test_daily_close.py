@@ -286,3 +286,20 @@ class TestDailyClose(AccountTestInvoicingCommon):
         self.assertEqual(summary["total_collected"], 0.0)
         self.assertEqual(summary["expected_cash"], 0.0)
         self.assertEqual(summary["sales"][0]["amount"], 0.0)
+
+    def test_sale_details_report_renders_daily_close(self):
+        """El informe de detalle de ventas del TPV incluye el cierre diario."""
+        report = self.env["ir.actions.report"]._get_report(
+            "point_of_sale.sale_details_report"
+        )
+        data = {
+            "date_start": fields.Datetime.to_string(
+                datetime.combine(self.today, datetime.min.time())
+            ),
+            "date_stop": fields.Datetime.to_string(
+                datetime.combine(self.today, datetime.max.time())
+            ),
+            "config_ids": self.env["pos.config"].search([]).ids,
+        }
+        html, _report_type = report._render_qweb_html(report.report_name, [], data=data)
+        self.assertIn(b'id="daily_close"', html)
